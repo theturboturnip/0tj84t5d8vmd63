@@ -1,0 +1,91 @@
+timestamp = "2025-11-25_20:12:18+00:00"
+generated_by = "gen_report.py"
+git_hash = "637d2d6\n"
+
+[single_checker_1per]
+dut = "mkSingleChecker3_1percycle"
+fit_timestamp = "2025-11-25_18:56:36+00:00"
+sta_timestamp = "2025-11-25_18:59:28+00:00"
+fmax = "253.55"
+luts_total = 3223
+luts_dut = 3034
+luts_input_harness = 126
+luts_output_harness = 64
+luts_device_max = 933120
+
+[single_checker_2per]
+dut = "mkSingleChecker3_2percycle"
+fit_timestamp = "2025-11-25_19:03:46+00:00"
+sta_timestamp = "2025-11-25_19:07:35+00:00"
+fmax = "194.21"
+luts_total = 4636
+luts_dut = 4445
+luts_input_harness = 129
+luts_output_harness = 62
+luts_device_max = 933120
+
+[full_exposer_0checkers]
+dut = "mkCombinedIOCapExposerV6_0pool_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-25_19:11:47+00:00"
+sta_timestamp = "2025-11-25_19:14:50+00:00"
+fmax = "182.92"
+luts_total = 4017
+luts_dut = 3824
+luts_input_harness = 70
+luts_output_harness = 122
+luts_device_max = 933120
+
+[full_exposer_1checkers_2per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_1pool_2percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-25_19:19:49+00:00"
+sta_timestamp = "2025-11-25_19:23:56+00:00"
+fmax = "167.2"
+luts_total = 13540
+luts_dut = 13358
+luts_input_harness = 64
+luts_output_harness = 118
+luts_device_max = 933120
+
+[full_exposer_2checkers_2per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_2pool_2percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-25_19:29:35+00:00"
+sta_timestamp = "2025-11-25_19:34:25+00:00"
+fmax = "159.92"
+luts_total = 21310
+luts_dut = 21147
+luts_input_harness = 64
+luts_output_harness = 98
+luts_device_max = 933120
+
+[full_exposer_3checkers_2per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_3pool_2percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-25_19:40:43+00:00"
+sta_timestamp = "2025-11-25_19:45:32+00:00"
+fmax = "147.02"
+luts_total = 28879
+luts_dut = 28729
+luts_input_harness = 58
+luts_output_harness = 91
+luts_device_max = 933120
+
+[full_exposer_4checkers_2per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_4pool_2percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-25_19:52:26+00:00"
+sta_timestamp = "2025-11-25_19:57:57+00:00"
+fmax = "152.35"
+luts_total = 36896
+luts_dut = 36735
+luts_input_harness = 59
+luts_output_harness = 102
+luts_device_max = 933120
+
+[full_exposer_5checkers_2per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_5pool_2percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-25_20:05:40+00:00"
+sta_timestamp = "2025-11-25_20:11:31+00:00"
+fmax = "152.0"
+luts_total = 44707
+luts_dut = 44548
+luts_input_harness = 56
+luts_output_harness = 102
+luts_device_max = 933120

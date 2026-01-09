@@ -1,0 +1,21 @@
+cabal-version: 3.6
+name:          vipbundle
+version:       0.1.0.0
+
+executable vipbundle
+  hs-source-dirs: src
+  main-is: VIPBundle.hs
+  other-modules: VIPBundle.InterfaceInference
+               , VIPBundle.Parse
+               , VIPBundle.Pretty_QUARTUS_IP_TCL
+               , VIPBundle.Types
+  build-depends: base
+               , containers
+               , pretty
+               , filepath
+               , split
+               , parsec
+               , regex-tdfa
+               , aeson
+               , bytestring
+  default-language: GHC2021

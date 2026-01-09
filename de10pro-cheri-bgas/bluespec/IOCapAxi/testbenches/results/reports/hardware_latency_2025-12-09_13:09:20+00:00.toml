@@ -1,0 +1,685 @@
+timestamp = "2025-12-09_13:09:20+00:00"
+generated_by = "gen_report.py"
+git_hash = "ff8cfc8\n"
+
+[full_exposer_0checkers]
+dut = "mkCombinedIOCapExposerV6_0pool_KeyManager2V1_64_Tb"
+timestamp = "2025-12-09_12:58:42+00:00"
+aw_mean_latency_0cav_4flit = 90
+aw_mean_latency_1cav_4flit = 90
+aw_mean_latency_2cav_4flit = 90
+aw_throughput_0cav_1flit = 1
+aw_throughput_1cav_1flit = 1
+aw_throughput_2cav_1flit = 1
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 20
+upload_no_dma_debug_enablekey_latency = 30
+upload_no_dma_debug_state_valid_latency = 40
+upload_under_dma_status_latency = 20
+upload_under_dma_debug_enablekey_latency = 30
+upload_under_dma_4flits_debug_valid_latency = 40
+upload_under_dma_8flits_debug_valid_latency = 40
+upload_under_dma_12flits_debug_valid_latency = 40
+upload_under_dma_16flits_debug_valid_latency = 40
+upload_under_dma_20flits_debug_valid_latency = 40
+upload_under_dma_24flits_debug_valid_latency = 40
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 60
+revoke_under_dma_killkey_latency = true
+revoke_under_dma_state_invalidnotrevoked_latency = true
+revoke_under_dma_4flits_debug_invalid_latency = [
+    nan,
+    nan,
+    nan,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    nan,
+    nan,
+    nan,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    nan,
+    nan,
+    nan,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    nan,
+    nan,
+    nan,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    nan,
+    nan,
+    nan,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    nan,
+    nan,
+    nan,
+]
+n_revokes_per_cycle_rolling = 0.2535496957403651
+n_uploads_per_cycle_rolling = 0.25119316754584275
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.25119316754584275
+
+[full_exposer_1checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_1pool_1percycle_KeyManager2V1_Tb"
+timestamp = "2025-12-09_12:59:33+00:00"
+aw_mean_latency_0cav_4flit = 339.95962314939436
+aw_mean_latency_1cav_4flit = 669.9005140109434
+aw_mean_latency_2cav_4flit = 999.8353982300885
+aw_throughput_0cav_1flit = 0.3334039662457776
+aw_throughput_1cav_1flit = 0.17396195393512842
+aw_throughput_2cav_1flit = 0.11768442868375695
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 40
+upload_no_dma_debug_enablekey_latency = 50
+upload_no_dma_debug_state_valid_latency = 60
+upload_under_dma_status_latency = 40
+upload_under_dma_debug_enablekey_latency = 50
+upload_under_dma_4flits_debug_valid_latency = 60
+upload_under_dma_8flits_debug_valid_latency = 60
+upload_under_dma_12flits_debug_valid_latency = 60
+upload_under_dma_16flits_debug_valid_latency = 60
+upload_under_dma_20flits_debug_valid_latency = 60
+upload_under_dma_24flits_debug_valid_latency = 60
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 50
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    60,
+    85.0,
+    110,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    100,
+    125.0,
+    150,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    150,
+    175.0,
+    200,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    700,
+    725.0,
+    750,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    1180,
+    1205.0,
+    1230,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    1660,
+    1685.0,
+    1710,
+]
+n_revokes_per_cycle_rolling = 0.16937669376693767
+n_uploads_per_cycle_rolling = 0.16719612104999165
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.16719612104999165
+
+[full_exposer_2checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_2pool_1percycle_KeyManager2V1_Tb"
+timestamp = "2025-12-09_13:00:24+00:00"
+aw_mean_latency_0cav_4flit = 219.98205473306416
+aw_mean_latency_1cav_4flit = 439.9436246062013
+aw_mean_latency_2cav_4flit = 659.9008849557522
+aw_throughput_0cav_1flit = 0.6667829988782251
+aw_throughput_1cav_1flit = 0.34794398049990627
+aw_throughput_2cav_1flit = 0.23536027826666528
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 40
+upload_no_dma_debug_enablekey_latency = 50
+upload_no_dma_debug_state_valid_latency = 60
+upload_under_dma_status_latency = 40
+upload_under_dma_debug_enablekey_latency = 50
+upload_under_dma_4flits_debug_valid_latency = 60
+upload_under_dma_8flits_debug_valid_latency = 60
+upload_under_dma_12flits_debug_valid_latency = 60
+upload_under_dma_16flits_debug_valid_latency = 60
+upload_under_dma_20flits_debug_valid_latency = 60
+upload_under_dma_24flits_debug_valid_latency = 60
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 50
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    100,
+    125.0,
+    150,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    470,
+    495.0,
+    520,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    950,
+    975.0,
+    1000,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    1430,
+    1455.0,
+    1480,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    1910,
+    1935.0,
+    1960,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    2390,
+    2415.0,
+    2440,
+]
+n_revokes_per_cycle_rolling = 0.16937669376693767
+n_uploads_per_cycle_rolling = 0.16719612104999165
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.16719612104999165
+
+[full_exposer_3checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_3pool_1percycle_KeyManager2V1_Tb"
+timestamp = "2025-12-09_13:01:22+00:00"
+aw_mean_latency_0cav_4flit = 170
+aw_mean_latency_1cav_4flit = 363.29464433758915
+aw_mean_latency_2cav_4flit = 546.5929203539823
+aw_throughput_0cav_1flit = 1
+aw_throughput_1cav_1flit = 0.5219159707498594
+aw_throughput_2cav_1flit = 0.35310844804149805
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 40
+upload_no_dma_debug_enablekey_latency = 50
+upload_no_dma_debug_state_valid_latency = 60
+upload_under_dma_status_latency = 40
+upload_under_dma_debug_enablekey_latency = 50
+upload_under_dma_4flits_debug_valid_latency = 60
+upload_under_dma_8flits_debug_valid_latency = 60
+upload_under_dma_12flits_debug_valid_latency = 60
+upload_under_dma_16flits_debug_valid_latency = 60
+upload_under_dma_20flits_debug_valid_latency = 60
+upload_under_dma_24flits_debug_valid_latency = 60
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 60
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    130,
+    145.0,
+    160,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    710,
+    730.0,
+    750,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    1190,
+    1235.0,
+    1280,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    1670,
+    1700.0,
+    1730,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    2150,
+    2165.0,
+    2180,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    2610,
+    2625.0,
+    2640,
+]
+n_revokes_per_cycle_rolling = 0.16937669376693767
+n_uploads_per_cycle_rolling = 0.16719612104999165
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.16719612104999165
+
+[full_exposer_4checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_4pool_1percycle_KeyManager2V1_Tb"
+timestamp = "2025-12-09_13:02:31+00:00"
+aw_mean_latency_0cav_4flit = 170
+aw_mean_latency_1cav_4flit = 324.97264135300946
+aw_mean_latency_2cav_4flit = 489.9575221238938
+aw_throughput_0cav_1flit = 1
+aw_throughput_1cav_1flit = 0.6957775726811259
+aw_throughput_2cav_1flit = 0.47068624388212016
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 40
+upload_no_dma_debug_enablekey_latency = 50
+upload_no_dma_debug_state_valid_latency = 60
+upload_under_dma_status_latency = 40
+upload_under_dma_debug_enablekey_latency = 50
+upload_under_dma_4flits_debug_valid_latency = 60
+upload_under_dma_8flits_debug_valid_latency = 60
+upload_under_dma_12flits_debug_valid_latency = 60
+upload_under_dma_16flits_debug_valid_latency = 60
+upload_under_dma_20flits_debug_valid_latency = 60
+upload_under_dma_24flits_debug_valid_latency = 60
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 60
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    130,
+    145.0,
+    160,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    710,
+    735.0,
+    760,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    1190,
+    1260.0,
+    1330,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    1670,
+    1725.0,
+    1780,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    2150,
+    2195.0,
+    2240,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    2610,
+    2650.0,
+    2690,
+]
+n_revokes_per_cycle_rolling = 0.16937669376693767
+n_uploads_per_cycle_rolling = 0.16719612104999165
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.16719612104999165
+
+[full_exposer_9checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_9pool_1percycle_KeyManager2V1_Tb"
+timestamp = "2025-12-09_13:04:15+00:00"
+aw_mean_latency_0cav_4flit = 170
+aw_mean_latency_1cav_4flit = 280
+aw_mean_latency_2cav_4flit = 390
+aw_throughput_0cav_1flit = 1
+aw_throughput_1cav_1flit = 1
+aw_throughput_2cav_1flit = 1
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 40
+upload_no_dma_debug_enablekey_latency = 50
+upload_no_dma_debug_state_valid_latency = 60
+upload_under_dma_status_latency = 40
+upload_under_dma_debug_enablekey_latency = 50
+upload_under_dma_4flits_debug_valid_latency = 60
+upload_under_dma_8flits_debug_valid_latency = 60
+upload_under_dma_12flits_debug_valid_latency = 60
+upload_under_dma_16flits_debug_valid_latency = 60
+upload_under_dma_20flits_debug_valid_latency = 60
+upload_under_dma_24flits_debug_valid_latency = 60
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 60
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    130,
+    145.0,
+    160,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    710,
+    735.0,
+    760,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    1190,
+    1265.0,
+    1340,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    1670,
+    1785.0,
+    1900,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    2150,
+    2245.0,
+    2340,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    2610,
+    2695.0,
+    2780,
+]
+n_revokes_per_cycle_rolling = 0.16937669376693767
+n_uploads_per_cycle_rolling = 0.16719612104999165
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.16719612104999165
+
+[full_exposer_1checkers_2per_64]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_1pool_2percycle_KeyManager2V1_64_Tb"
+timestamp = "2025-12-09_13:04:38+00:00"
+aw_mean_latency_0cav_4flit = 159.98654104979812
+aw_mean_latency_1cav_4flit = 309.9602056043774
+aw_mean_latency_2cav_4flit = 459.9309734513274
+aw_throughput_0cav_1flit = 0.6667497569608895
+aw_throughput_1cav_1flit = 0.36371860205650874
+aw_throughput_2cav_1flit = 0.2500691562932227
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 20
+upload_no_dma_debug_enablekey_latency = 30
+upload_no_dma_debug_state_valid_latency = 40
+upload_under_dma_status_latency = 20
+upload_under_dma_debug_enablekey_latency = 30
+upload_under_dma_4flits_debug_valid_latency = 40
+upload_under_dma_8flits_debug_valid_latency = 40
+upload_under_dma_12flits_debug_valid_latency = 40
+upload_under_dma_16flits_debug_valid_latency = 40
+upload_under_dma_20flits_debug_valid_latency = 40
+upload_under_dma_24flits_debug_valid_latency = 40
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 50
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    100,
+    125.0,
+    150,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    410,
+    455.0,
+    480,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    920,
+    1005.0,
+    1030,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    1400,
+    1525.0,
+    1550,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    1880,
+    2045.0,
+    2070,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    2360,
+    2565.0,
+    2590,
+]
+n_revokes_per_cycle_rolling = 0.2535496957403651
+n_uploads_per_cycle_rolling = 0.25119316754584275
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.25119316754584275
+
+[full_exposer_2checkers_2per_64]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_2pool_2percycle_KeyManager2V1_64_Tb"
+timestamp = "2025-12-09_13:05:35+00:00"
+aw_mean_latency_0cav_4flit = 110
+aw_mean_latency_1cav_4flit = 199.9834190018239
+aw_mean_latency_2cav_4flit = 299.9646017699115
+aw_throughput_0cav_1flit = 1
+aw_throughput_1cav_1flit = 0.7273933363485602
+aw_throughput_2cav_1flit = 0.5000995773494722
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 20
+upload_no_dma_debug_enablekey_latency = 30
+upload_no_dma_debug_state_valid_latency = 40
+upload_under_dma_status_latency = 20
+upload_under_dma_debug_enablekey_latency = 30
+upload_under_dma_4flits_debug_valid_latency = 40
+upload_under_dma_8flits_debug_valid_latency = 40
+upload_under_dma_12flits_debug_valid_latency = 40
+upload_under_dma_16flits_debug_valid_latency = 40
+upload_under_dma_20flits_debug_valid_latency = 40
+upload_under_dma_24flits_debug_valid_latency = 40
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 60
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    130,
+    145.0,
+    160,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    690,
+    745.0,
+    870,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    1170,
+    1265.0,
+    1430,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    1650,
+    1785.0,
+    1990,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    2130,
+    2305.0,
+    2550,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    2600,
+    2815.0,
+    3110,
+]
+n_revokes_per_cycle_rolling = 0.2535496957403651
+n_uploads_per_cycle_rolling = 0.25119316754584275
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.25119316754584275
+
+[full_exposer_3checkers_2per_64]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_3pool_2percycle_KeyManager2V1_64_Tb"
+timestamp = "2025-12-09_13:06:38+00:00"
+aw_mean_latency_0cav_4flit = 110
+aw_mean_latency_1cav_4flit = 160
+aw_mean_latency_2cav_4flit = 246.64601769911505
+aw_throughput_0cav_1flit = 1
+aw_throughput_1cav_1flit = 1
+aw_throughput_2cav_1flit = 0.7501576658811033
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 20
+upload_no_dma_debug_enablekey_latency = 30
+upload_no_dma_debug_state_valid_latency = 40
+upload_under_dma_status_latency = 20
+upload_under_dma_debug_enablekey_latency = 30
+upload_under_dma_4flits_debug_valid_latency = 40
+upload_under_dma_8flits_debug_valid_latency = 40
+upload_under_dma_12flits_debug_valid_latency = 40
+upload_under_dma_16flits_debug_valid_latency = 40
+upload_under_dma_20flits_debug_valid_latency = 40
+upload_under_dma_24flits_debug_valid_latency = 40
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 60
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    130,
+    145.0,
+    160,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    700,
+    755.0,
+    870,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    1180,
+    1275.0,
+    1430,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    1660,
+    1795.0,
+    1990,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    2140,
+    2315.0,
+    2550,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    2600,
+    2815.0,
+    3110,
+]
+n_revokes_per_cycle_rolling = 0.2535496957403651
+n_uploads_per_cycle_rolling = 0.25119316754584275
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.25119316754584275
+
+[full_exposer_4checkers_2per_64]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_4pool_2percycle_KeyManager2V1_64_Tb"
+timestamp = "2025-12-09_13:07:57+00:00"
+aw_mean_latency_0cav_4flit = 110
+aw_mean_latency_1cav_4flit = 160
+aw_mean_latency_2cav_4flit = 210
+aw_throughput_0cav_1flit = 1
+aw_throughput_1cav_1flit = 1
+aw_throughput_2cav_1flit = 1
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 20
+upload_no_dma_debug_enablekey_latency = 30
+upload_no_dma_debug_state_valid_latency = 40
+upload_under_dma_status_latency = 20
+upload_under_dma_debug_enablekey_latency = 30
+upload_under_dma_4flits_debug_valid_latency = 40
+upload_under_dma_8flits_debug_valid_latency = 40
+upload_under_dma_12flits_debug_valid_latency = 40
+upload_under_dma_16flits_debug_valid_latency = 40
+upload_under_dma_20flits_debug_valid_latency = 40
+upload_under_dma_24flits_debug_valid_latency = 40
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 60
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    130,
+    145.0,
+    160,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    700,
+    755.0,
+    870,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    1180,
+    1275.0,
+    1430,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    1660,
+    1795.0,
+    1990,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    2140,
+    2315.0,
+    2550,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    2600,
+    2815.0,
+    3110,
+]
+n_revokes_per_cycle_rolling = 0.2535496957403651
+n_uploads_per_cycle_rolling = 0.25119316754584275
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.25119316754584275
+
+[full_exposer_5checkers_2per_64]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_5pool_2percycle_KeyManager2V1_64_Tb"
+timestamp = "2025-12-09_13:09:20+00:00"
+aw_mean_latency_0cav_4flit = 110
+aw_mean_latency_1cav_4flit = 160
+aw_mean_latency_2cav_4flit = 210
+aw_throughput_0cav_1flit = 1
+aw_throughput_1cav_1flit = 1
+aw_throughput_2cav_1flit = 1
+kmngr_aw_b_latency = 20
+kmngr_ar_r_latency = 20
+upload_no_dma_status_latency = 20
+upload_no_dma_debug_enablekey_latency = 30
+upload_no_dma_debug_state_valid_latency = 40
+upload_under_dma_status_latency = 20
+upload_under_dma_debug_enablekey_latency = 30
+upload_under_dma_4flits_debug_valid_latency = 40
+upload_under_dma_8flits_debug_valid_latency = 40
+upload_under_dma_12flits_debug_valid_latency = 40
+upload_under_dma_16flits_debug_valid_latency = 40
+upload_under_dma_20flits_debug_valid_latency = 40
+upload_under_dma_24flits_debug_valid_latency = 40
+revoke_no_dma_killkey_latency = 20
+revoke_no_dma_state_invalidnotrevoked_latency = 20
+revoke_no_dma_state_invalid_latency = 60
+revoke_under_dma_killkey_latency = 20
+revoke_under_dma_state_invalidnotrevoked_latency = 20
+revoke_under_dma_4flits_debug_invalid_latency = [
+    130,
+    145.0,
+    160,
+]
+revoke_under_dma_8flits_debug_invalid_latency = [
+    700,
+    755.0,
+    870,
+]
+revoke_under_dma_12flits_debug_invalid_latency = [
+    1180,
+    1275.0,
+    1430,
+]
+revoke_under_dma_16flits_debug_invalid_latency = [
+    1660,
+    1795.0,
+    1990,
+]
+revoke_under_dma_20flits_debug_invalid_latency = [
+    2140,
+    2315.0,
+    2550,
+]
+revoke_under_dma_24flits_debug_invalid_latency = [
+    2600,
+    2815.0,
+    3110,
+]
+n_revokes_per_cycle_rolling = 0.2535496957403651
+n_uploads_per_cycle_rolling = 0.25119316754584275
+n_revokes_per_cycle_alone = 0.9846153846153847
+n_uploads_per_cycle_alone = 0.25119316754584275

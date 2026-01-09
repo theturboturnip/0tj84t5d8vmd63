@@ -1,0 +1,71 @@
+import BlueAXI4 :: *;
+import Connectable :: *;
+
+typedef Bit#(128) Key;
+// 0x1000 bytes => 4096 bytes => 256 keys => 8 bit ID
+typedef Bit#(8) KeyId;
+
+typedef struct  {
+    Bool start;
+    UInt#(2) flitnum;
+} IOCapAXI4_AddrUserBits deriving (Bits); // TODO RIGHT NOW ASSUMING BITS=3
+
+interface IOCapAXI4_Master#(numeric type t_id, numeric type t_data);
+    interface AXI4_Master#(
+          t_id
+        // Currently hardcoded for 64-bit addressing, so we know it takes 3 cycles to pack a capability into the user bits
+        , 64 // t_addr
+        , t_data
+        // Write address, read address have enough user bits to store IOCapAXI4_AddrUserBits
+        , 3 // t_aw_user
+        // Write data, write response, read response don't have user bits 
+        , 0 // t_w_user
+        , 0 // t_b_user
+        , 3 // t_ar_user
+        , 0 // t_r_user
+    ) axiSignals;
+endinterface
+
+interface IOCapAXI4_Slave#(numeric type t_id, numeric type t_data);
+    interface AXI4_Slave#(
+          t_id
+        // Currently hardcoded for 64-bit addressing, so we know it takes 3 cycles to pack a capability into the user bits
+        , 64 // t_addr
+        , t_data
+        // Write address, read address have enough user bits to store IOCapAXI4_AddrUserBits
+        , 3 // t_aw_user
+        // Write data, write response, read response don't have user bits 
+        , 0 // t_w_user
+        , 0 // t_b_user
+        , 3 // t_ar_user
+        , 0 // t_r_user
+    ) axiSignals;
+endinterface
+
+instance Connectable#(
+  IOCapAXI4_Master#(t_id, t_data),
+  IOCapAXI4_Slave#(t_id, t_data));
+  module mkConnection#(
+    IOCapAXI4_Master#(t_id, t_data) m,
+    IOCapAXI4_Slave#(t_id, t_data) s)
+    (Empty);
+    mkConnection(m.axiSignals, s.axiSignals);
+  endmodule
+endinstance
+
+interface IOCapSingleExposer#(numeric type t_iocap_id, numeric type t_iocap_data);
+    interface IOCapAXI4_Slave#(t_iocap_id, t_iocap_data) iocapsIn;
+
+    interface AXI4_Master#(t_iocap_id, 64, t_iocap_data, 0, 0, 0, 0, 0) sanitizedOut;
+endinterface
+
+function IOCapSingleExposer#(id_out, t_iocap_data)
+  mapIOCapSingleExposer_id ( function Bit #(id_out) fReq (Bit #(id_in)  x)
+                    , function Bit #(id_in)  fRsp (Bit #(id_out) x)
+                    , IOCapSingleExposer#(id_in, t_iocap_data) m) =
+  interface IOCapSingleExposer;
+    interface iocapsIn = interface IOCapAXI4_Slave#(id_out, t_iocap_data);
+      interface axiSignals = mapAXI4_Slave_id(fRsp, fReq, m.iocapsIn.axiSignals);
+    endinterface;
+    interface sanitizedOut = mapAXI4_Master_id(fReq, fRsp, m.sanitizedOut);
+  endinterface;

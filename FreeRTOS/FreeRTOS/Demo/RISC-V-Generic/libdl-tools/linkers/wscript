@@ -1,0 +1,95 @@
+#
+# RTEMS Tools Project (http://www.rtems.org/)
+# Copyright 2014-2016 Chris Johns (chrisj@rtems.org)
+# All rights reserved.
+#
+# This file is part of the RTEMS Tools package in 'rtems-tools'.
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+
+#
+# RTEMS Linker build script.
+#
+import sys
+
+def init(ctx):
+    pass
+
+def options(opt):
+    opt.load('compiler_c')
+    opt.load('compiler_cxx')
+
+def configure(conf):
+    conf.load('compiler_c')
+    conf.load('compiler_cxx')
+    conf.write_config_header('config.h')
+
+def build(bld):
+    #
+    # Build the doxygen documentation.
+    #
+    if bld.cmd == 'doxy':
+        bld(features = 'doxygen',
+            doxyfile = 'rtl-host.conf')
+        return
+
+    #
+    # The local configuration.
+    #
+    conf = {}
+
+    #
+    # Build flags.
+    #
+    rtemstoolkit = '../rtemstoolkit'
+    conf['includes'] = [rtemstoolkit,
+                        rtemstoolkit + '/elftoolchain/libelf',
+                        rtemstoolkit + '/elftoolchain/libdwarf',
+                        rtemstoolkit + '/elftoolchain/common',
+                        rtemstoolkit + '/elftoolchain/libelftc',
+                        rtemstoolkit + '/libiberty']
+    if bld.env.DEST_OS == 'win32':
+        conf['includes'] += [rtemstoolkit + '/win32']
+    conf['warningflags'] = ['-Wall', '-Wextra', '-pedantic']
+    conf['optflags'] = bld.env.C_OPTS
+    conf['cflags'] = ['-pipe', '-g'] + conf['optflags']
+    conf['cxxflags'] = ['-pipe', '-g', '--std=c++11'] + conf['optflags']
+    conf['linkflags'] = ['-g']
+
+    #
+    # The list of modules.
+    #
+    modules = ['rld', 'elftc', 'dwarf', 'elf', 'iberty']
+
+    #
+    # The list of defines
+    #
+    defines = ['HAVE_CONFIG_H=1',
+               'RTEMS_VERSION=\"%s\"' % (bld.env.RTEMS_VERSION),
+               'RTEMS_RELEASE=\"%s\"' % (bld.env.RTEMS_RELEASE)]
+
+    #
+    # Build the symbols.
+    #
+    bld.program(target = 'freertos-syms',
+                source = ['rtems-syms.cpp'],
+                defines = defines,
+                includes = ['.'] + conf['includes'],
+                cflags = conf['cflags'] + conf['warningflags'],
+                cxxflags = conf['cxxflags'] + conf['warningflags'],
+                linkflags = conf['linkflags'],
+                use = modules)
+
+def tags(ctx):
+    ctx.exec_command('etags $(find . -name \*.[sSch])', shell = True)

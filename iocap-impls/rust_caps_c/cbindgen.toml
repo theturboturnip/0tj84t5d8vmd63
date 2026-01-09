@@ -1,0 +1,29 @@
+language = "C"
+cpp_compat = true
+include_guard = "LIBRUST_CAPS_C_H"
+# Simple presence on linux isn't enough to detect if we're hosted.
+# after_includes = """
+
+# // If we're on Linux, the crate should have been compiled with the 'std' feature
+# // and thus won't need ccap_panic_write_utf8() to be defined.
+# // On FreeBSD this isn't the case.
+# #if defined(__linux__)
+# #define LIBRUST_CAPS_C_HOSTED
+# #else
+# // TODO are there other situations in which this library is 'hosted' i.e. doesn't need a manual panic handler?
+# #endif"""
+
+[defines]
+"feature = std" = "LIBRUST_CAPS_C_HOSTED"
+
+[enum]
+prefix_with_name = true
+
+[parse]
+clean = true
+
+[parse.expand]
+crates = ["rust_caps_c"]
+all_features = false
+default_features = false
+features = []

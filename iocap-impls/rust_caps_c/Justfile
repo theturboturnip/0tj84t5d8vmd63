@@ -1,0 +1,27 @@
+default:
+    @just --list
+
+# Install necessary rust cross-compilation targets
+install-targets:
+    rustup target add x86_64-unknown-linux-gnu \
+        x86_64-unknown-none \
+        riscv64imac-unknown-none-elf \
+        aarch64-unknown-none
+
+_copy_results target:
+    @mkdir -p vendor/{{target}}
+    cp ./librust_caps_c.h ../target/{{target}}/release/librust_caps_c.a ./vendor/{{target}}/
+
+# Build static libraries for x86, riscv64gc, aarch64 - all for unknown-none targets
+build-all:
+    cargo build --release --target=x86_64-unknown-linux-gnu --features std
+    just _copy_results x86_64-unknown-linux-gnu
+
+    cargo build --release --target=x86_64-unknown-none --no-default-features
+    just _copy_results x86_64-unknown-none
+
+    cargo build --release --target=riscv64imac-unknown-none-elf --no-default-features
+    just _copy_results riscv64imac-unknown-none-elf
+
+    cargo build --release --target=aarch64-unknown-none --no-default-features
+    just _copy_results aarch64-unknown-none

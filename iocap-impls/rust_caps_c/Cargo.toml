@@ -1,0 +1,22 @@
+[package]
+name = "rust_caps_c"
+version = "0.6.4"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+# Include rust_caps without the std library
+rust_caps = { path = "../rust_caps", features = [], default-features = false }
+# std_rng => create the StdRng generator, doesn't imply std library
+rand = { version = "0.8.5", features = ["std_rng"], default-features = false }
+paste = "1.0.15"
+
+[build-dependencies]
+cbindgen = "0.26.0"
+build-target = "0.4.0"
+
+[features]
+std = ["rust_caps/std", "rand/std"]
+default = ["std"]

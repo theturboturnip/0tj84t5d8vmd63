@@ -1,0 +1,192 @@
+/******************************************************************************
+ * Copyright (c) 2011 IBM Corporation
+ * All rights reserved.
+ * This program and the accompanying materials
+ * are made available under the terms of the BSD License
+ * which accompanies this distribution, and is available at
+ * http://www.opensource.org/licenses/bsd-license.php
+ *
+ * Contributors:
+ *     IBM Corporation - initial implementation
+ *****************************************************************************/
+
+#ifndef _LIBVIRTIO_H
+#define _LIBVIRTIO_H
+
+#include <stdint.h>
+
+/* Device status bits */
+#define VIRTIO_STAT_ACKNOWLEDGE		1
+#define VIRTIO_STAT_DRIVER		2
+#define VIRTIO_STAT_DRIVER_OK		4
+#define VIRTIO_STAT_FEATURES_OK		8
+#define VIRTIO_STAT_NEEDS_RESET		64
+#define VIRTIO_STAT_FAILED		128
+
+#define BIT(x) (1ULL << (x))
+
+/* VIRTIO 1.0 Device independent feature bits */
+#define VIRTIO_F_RING_INDIRECT_DESC	BIT(28)
+#define VIRTIO_F_RING_EVENT_IDX		BIT(29)
+#define VIRTIO_F_VERSION_1		((uint64_t) BIT(32))
+#define VIRTIO_F_IOMMU_PLATFORM        ((uint64_t) BIT(33))
+
+/* Custom VIRTIO IOCap feature bit.
+When negotiated, VIRTIO_MMIO_QUEUE_IOCAP_{TXT,SIG}_WORD{0,1,2,3} in the device MMIO space
+must be populated with an IOCap for each queue (using VIRTIO_MMIO_QUEUE_SEL),
+and the descriptors in each queue must be 256-bit IOCaps.
+*/
+#define VIRTIO_F_IOCAP_QUEUE ((uint64_t) BIT(41))
+
+#define VIRTIO_TIMEOUT		        5000 /* 5 sec timeout */
+
+/* Definitions for vring_desc.flags */
+#define VRING_DESC_F_NEXT	1	/* buffer continues via the next field */
+#define VRING_DESC_F_WRITE	2	/* buffer is write-only (otherwise read-only) */
+#define VRING_DESC_F_INDIRECT	4	/* buffer contains a list of buffer descriptors */
+
+#ifdef VIRTIO_USE_PCI
+#error "VIRTIO_USE_PCI isn't yet supported by FreeRTOS"
+#endif
+
+#ifndef VIRTIO_USE_MMIO
+#define VIRTIO_USE_MMIO 1
+#endif
+
+#ifndef VIRTIO_USE_IOCAPS
+#define VIRTIO_USE_IOCAPS 0
+#endif
+
+#if VIRTIO_USE_IOCAPS
+#include "iocap/libccap.h"
+#endif
+
+/* Descriptor table entry - see Virtio Spec chapter 2.3.2 */
+struct vring_desc {
+	uint64_t addr;		/* Address (guest-physical) */
+	uint32_t len;		/* Length */
+	uint16_t flags;		/* The flags as indicated above */
+	uint16_t next;		/* Next field if flags & NEXT */
+};
+
+/* Definitions for vring_avail.flags */
+#define VRING_AVAIL_F_NO_INTERRUPT	1
+
+/* Available ring - see Virtio Spec chapter 2.3.4 */
+struct vring_avail {
+	uint16_t flags;
+	uint16_t idx;
+	uint16_t ring[];
+};
+
+/* Definitions for vring_used.flags */
+#define VRING_USED_F_NO_NOTIFY		1
+
+struct vring_used_elem {
+	uint32_t id;		/* Index of start of used descriptor chain */
+	uint32_t len;		/* Total length of the descriptor chain which was used */
+};
+
+struct vring_used {
+	uint16_t flags;
+	uint16_t idx;
+	struct vring_used_elem ring[];
+};
+
+/* Structure shared with SLOF and is 16bytes */
+struct virtio_cap {
+	void *addr;
+	uint8_t bar;
+	uint8_t is_io;
+	uint8_t cap_id;
+};
+
+typedef union {
+	struct vring_desc *desc_direct;
+	#if VIRTIO_USE_IOCAPS
+	CCap2024_11 *desc_iocap;
+	#endif
+	// For use in generic cases that just take a pointer value
+	void* desc_void;
+} vqs_desc;
+
+struct vqs {
+	uint32_t size;
+	void *buf_mem;
+	// Allocated to be an array of (vring_desc) or (CCap2024_11) based on use_desc_iocap (TODO make this based on a negotiated feature)
+	vqs_desc desc;
+	struct vring_avail *avail;
+	struct vring_used *used;
+	void **desc_gpas; /* to get gpa from desc->addr (which is ioba) */
+	uint64_t bus_desc;
+	// 0 if `desc` is an array of `struct vring_desc`, otherwise it is an array of CCap2024_11
+	uint8_t use_desc_iocap;
+};
+
+#ifdef VIRTIO_USE_PCI
+struct virtio_device {
+	uint64_t features;
+	struct virtio_cap legacy;
+	struct virtio_cap common;
+	struct virtio_cap notify;
+	struct virtio_cap isr;
+	struct virtio_cap device;
+	struct virtio_cap pci;
+	uint32_t notify_off_mul;
+	struct vqs vq[3];
+};
+#elif VIRTIO_USE_MMIO
+	struct virtio_device {
+	uint32_t     *mmio_base;
+	uint64_t     features;
+	struct vqs   vq[3];
+};
+#endif
+
+typedef struct {
+	uint8_t* pucEthernetBuffer;
+	size_t xDataLength;
+} DMADescriptor_t;
+
+/* Parts of the virtqueue are aligned on a 4096 byte page boundary */
+#define VQ_ALIGN(addr)	(((addr) + 0xfff) & ~0xfff)
+
+extern unsigned long virtio_vring_size(unsigned int qsize, size_t desc_size);
+extern unsigned int virtio_get_qsize(struct virtio_device *dev, int queue);
+extern unsigned int virtio_negotiate_qsize(struct virtio_device *dev, int queue, uint16_t max_size);
+extern vqs_desc virtio_get_vring_desc(struct virtio_device *dev, int queue);
+extern struct vring_avail *virtio_get_vring_avail(struct virtio_device *dev, int queue);
+extern struct vring_used *virtio_get_vring_used(struct virtio_device *dev, int queue);
+extern void virtio_fill_desc(struct vqs *vq, int id, uint64_t features,
+                             uint64_t addr, uint32_t len,
+                             uint16_t flags, uint16_t next);
+extern void virtio_free_desc(struct vqs *vq, int id, uint64_t features);
+size_t virtio_desc_addr(struct virtio_device *vdev, int queue, int id);
+extern struct vqs *virtio_queue_init_vq(struct virtio_device *dev, unsigned int id);
+extern void virtio_queue_term_vq(struct virtio_device *dev, struct vqs *vq, unsigned int id);
+
+extern struct virtio_device *virtio_setup_vd(void *);
+extern void virtio_reset_device(struct virtio_device *dev);
+extern void virtio_queue_notify(struct virtio_device *dev, int queue);
+extern void virtio_set_status(struct virtio_device *dev, int status);
+extern void virtio_get_status(struct virtio_device *dev, int *status);
+extern void virtio_set_guest_features(struct virtio_device *dev, uint64_t features);
+extern uint64_t virtio_get_host_features(struct virtio_device *dev);
+extern int virtio_negotiate_guest_features(struct virtio_device *dev, uint64_t features);
+extern uint64_t virtio_get_config(struct virtio_device *dev, int offset, int size);
+extern int __virtio_read_config(struct virtio_device *dev, void *dst,
+				int offset, int len);
+
+extern void virtio_get_interrupt_status(struct virtio_device *dev, uint32_t *status);
+extern void virtio_interrupt_ack(struct virtio_device *dev, uint32_t ack);
+extern void virtio_queue_ready(struct virtio_device *dev, int queue);
+
+/**
+ * If IOcaps are enabled, use MMIO to query the current key manager statistics
+ * (how many reads+writes were performed, and how many were correctly authenticated)
+ * and print them.
+ * 
+ * Otherwise, no-op.
+ */
+extern void virtio_debug_keymngr(void);
+#endif /* _LIBVIRTIO_H */

@@ -1,0 +1,67 @@
+timestamp = "2025-11-21_16:10:03+00:00"
+generated_by = "gen_report.py"
+git_hash = "e9a2586\n"
+
+[single_checker_1per]
+dut = "mkSingleChecker3_1percycle"
+fit_timestamp = "2025-11-21_14:05:41+00:00"
+sta_timestamp = "2025-11-21_14:08:33+00:00"
+fmax = "253.55"
+luts = 3223
+luts_device_max = 933120
+
+[single_checker_2per]
+dut = "mkSingleChecker3_2percycle"
+fit_timestamp = "2025-11-21_14:12:56+00:00"
+sta_timestamp = "2025-11-21_14:16:49+00:00"
+fmax = "194.21"
+luts = 4636
+luts_device_max = 933120
+
+[full_exposer_0checkers_1per]
+dut = "mkCombinedIOCapExposerV6_0pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-21_14:21:14+00:00"
+sta_timestamp = "2025-11-21_14:24:22+00:00"
+fmax = "187.23"
+luts = 4041
+luts_device_max = 933120
+
+[full_exposer_1checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_1pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-21_14:29:07+00:00"
+sta_timestamp = "2025-11-21_14:32:37+00:00"
+fmax = "177.97"
+luts = 10754
+luts_device_max = 933120
+
+[full_exposer_2checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_2pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-21_14:37:51+00:00"
+sta_timestamp = "2025-11-21_14:41:37+00:00"
+fmax = "185.94"
+luts = 15997
+luts_device_max = 933120
+
+[full_exposer_3checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_3pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-21_14:47:18+00:00"
+sta_timestamp = "2025-11-21_14:51:19+00:00"
+fmax = "182.35"
+luts = 21125
+luts_device_max = 933120
+
+[full_exposer_4checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_4pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-21_14:57:26+00:00"
+sta_timestamp = "2025-11-21_15:01:45+00:00"
+fmax = "184.6"
+luts = 26826
+luts_device_max = 933120
+
+[full_exposer_4checkers_2per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_4pool_2percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-21_15:08:58+00:00"
+sta_timestamp = "2025-11-21_15:19:20+00:00"
+fmax = "173.85"
+luts = 36991
+luts_device_max = 933120

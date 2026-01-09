@@ -1,0 +1,8 @@
+[workspace]
+
+resolver = "2"
+
+members = [
+    "rust_caps", "rust_caps_c",
+    "rust_caps_testgen",
+]

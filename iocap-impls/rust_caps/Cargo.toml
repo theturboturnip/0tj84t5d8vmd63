@@ -1,0 +1,22 @@
+[package]
+name = "rust_caps"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+openssl = { version = "0.10.55", optional = true }
+packed_struct = { version = "0.10.1", features = ["byte_types_256"], default-features = false }
+# TODO ungate assert_hex as optional. It should be able to operate in no_std environments. Prob needs a fork/PR.
+assert_hex =  { version = "0.2.2", optional = true }
+dbg_hex = { version = "0.1.1", optional = true }
+thiserror = { version = "1.0.44", optional = true }
+bitutils = { version = "3.0.1", default-features = false }
+# std_rng => create the StdRng generator, doesn't imply std library
+rand = { version = "0.8.5", features = ["std_rng"], default-features = false }
+arrayvec = { version = "0.7.6", default-features = false }
+
+[features]
+std = ["thiserror", "bitutils/use_std", "assert_hex", "dbg_hex", "packed_struct/use_serde", "packed_struct/std", "rand/std", "arrayvec/std"]
+default = ["std", "openssl"]

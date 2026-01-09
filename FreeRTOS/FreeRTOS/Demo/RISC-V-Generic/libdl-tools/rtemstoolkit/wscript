@@ -1,0 +1,433 @@
+#
+# RTEMS Tools Project (http://www.rtems.org/)
+# Copyright 2014-2018 Chris Johns (chrisj@rtems.org)
+# All rights reserved.
+#
+# This file is part of the RTEMS Tools package in 'rtems-tools'.
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+
+#
+# RTEMS Toolkit build script.
+#
+import sys
+
+#
+# Waf system setup. Allow more than one build in the same tree.
+#
+top = '.'
+out = 'build-' + sys.platform
+
+def init(ctx):
+    pass
+
+def options(opt):
+    opt.load('compiler_c')
+    opt.load('compiler_cxx')
+
+def configure(conf):
+    conf.load('compiler_c')
+    conf.load('compiler_cxx')
+    conf_libiberty(conf)
+    conf_elftoolchain(conf)
+
+    conf.find_program('m4')
+
+    conf.check(header_name = 'sys/wait.h',  features = 'c', mandatory = False)
+    conf.check_cc(fragment = '''
+                    #include <sys/types.h>
+                    #include <signal.h>
+                    int main() { pid_t pid = 1234; int r = kill(pid, SIGKILL); } ''',
+                  cflags = '-Wall', define_name = 'HAVE_KILL',
+                  msg = 'Checking for kill', mandatory = False)
+    conf.write_config_header('config.h')
+
+def build(bld):
+    #
+    # The local configuration.
+    #
+    conf = {}
+
+    #
+    # The include paths.
+    #
+    conf['includes'] = ['elftoolchain/libelf',
+                        'elftoolchain/libdwarf',
+                        'elftoolchain/common',
+                        'libiberty']
+    if bld.env.DEST_OS == 'win32':
+        conf['includes'] += ['win32']
+
+    #
+    # Build flags.
+    #
+    conf['warningflags'] = ['-Wall', '-Wextra', '-pedantic']
+    conf['optflags'] = bld.env.C_OPTS
+    conf['cflags'] = ['-pipe', '-g'] + conf['optflags']
+    conf['cxxflags'] = ['-pipe', '-g', '-std=c++11'] + conf['optflags']
+    conf['linkflags'] = ['-g']
+
+    #
+    # Create each of the modules as object files each with their own
+    # configurations.
+    #
+    bld_elftoolchain(bld, conf)
+    bld_libiberty(bld, conf)
+
+    #
+    # RLD source.
+    #
+    rld_source = ['ConvertUTF.c',
+                  'pkgconfig.cpp',
+                  'rld-buffer.cpp',
+                  'rld-cc.cpp',
+                  'rld-compression.cpp',
+                  'rld-config.cpp',
+                  'rld-dwarf.cpp',
+                  'rld-elf.cpp',
+                  'rld-files.cpp',
+                  'rld-outputter.cpp',
+                  'rld-path.cpp',
+                  'rld-process.cpp',
+                  'rld-rap.cpp',
+                  'rld-resolver.cpp',
+                  'rld-rtems.cpp',
+                  'rld-symbols.cpp',
+                  'rld.cpp']
+
+    #
+    # RTEMS Utilities.
+    #
+    rtems_utils = ['rtems-utils.cpp']
+
+    #
+    # Compression.
+    #
+    compression = ['fastlz.c']
+
+    #
+    # RTL static library
+    #
+    bld.stlib(target = 'rld',
+              install_path = None,
+              source = rld_source + rtems_utils + compression,
+              defines = ['HAVE_CONFIG_H=1',
+                         'RTEMS_VERSION=\"%s\"' % (bld.env.RTEMS_VERSION),
+                         'RTEMS_RELEASE=\"%s\"' % (bld.env.RTEMS_RELEASE),
+                         'FASTLZ_LEVEL=1'],
+              includes = ['.'] + conf['includes'],
+              cflags = conf['cflags'] + conf['warningflags'],
+              cxxflags = conf['cxxflags'] + conf['warningflags'],
+              linkflags = conf['linkflags'])
+
+    #
+    # The Python toolkit.
+    #
+    bld(features = 'py',
+        source = ['__init__.py',
+                  'check.py',
+                  'config.py',
+                  'configuration.py',
+                  'darwin.py',
+                  'error.py',
+                  'execute.py',
+                  'freebsd.py',
+                  'git.py',
+                  'host.py',
+                  'linux.py',
+                  'log.py',
+                  'macros.py',
+                  'mailer.py',
+                  'options.py',
+                  'path.py',
+                  'reraise.py',
+                  'rtems.py',
+                  'stacktraces.py',
+                  'textbox.py',
+                  'version.py',
+                  'windows.py'],
+        install_from = '.',
+        install_path = '${PREFIX}/share/rtems/rtemstoolkit')
+    bld.install_files('${PREFIX}/share/rtems/rtemstoolkit',
+                      'python-wrapper.sh',
+                      relative_trick = True)
+
+def rebuild(ctx):
+    import waflib.Options
+    waflib.Options.commands.extend(['clean', 'build'])
+
+def tags(ctx):
+    ctx.exec_command('etags $(find . -name \*.[sSch])', shell = True)
+
+#
+# Libelf module.
+#
+def conf_elftoolchain(conf):
+    pass
+
+def bld_elftoolchain(bld, conf):
+    libelf = 'elftoolchain/libelf/'
+    libelftc = 'elftoolchain/libelftc/'
+    libdwarf = 'elftoolchain/libdwarf/'
+    libelf_m4_rule = '${M4} -D SRCDIR=../rtemstoolkit/' + libelf[:-1] + ' ${SRC} > ${TGT}'
+    libdwarf_m4_rule = '${M4} -D SRCDIR=../rtemstoolkit/' + libdwarf[:-1] + ' ${SRC} > ${TGT}'
+    if bld.env.DEST_OS == 'win32':
+        includes = ['win32']
+    else:
+        includes = []
+
+    libelf_m4_source = ['libelf_convert.c',
+                        'libelf_fsize.c',
+                        'libelf_msize.c']
+    for s in libelf_m4_source:
+        bld(target = s, source = libelf + s[:-2] + '.m4', rule = libelf_m4_rule)
+
+    host_source = []
+
+    if bld.env.DEST_OS == 'linux':
+        common = 'elftoolchain/common/'
+        bld(target = common + 'native-elf-format.h',
+            source = common + 'native-elf-format',
+            name = 'native-elf-format',
+            rule   = './${SRC} > ${TGT}')
+        bld.add_group ()
+    elif bld.env.DEST_OS == 'win32':
+        host_source += [libelf + 'mmap_win32.c']
+
+    bld.stlib(target = 'elf',
+              features = 'c',
+              install_path = None,
+              use = ['native-elf-format'],
+              includes = [bld.bldnode.abspath(),
+                          'elftoolchain/libelf', 'elftoolchain/common'] + includes,
+              cflags = conf['cflags'],
+              source =[libelf + 'elf.c',
+                       libelf + 'elf_begin.c',
+                       libelf + 'elf_cntl.c',
+                       libelf + 'elf_end.c',
+                       libelf + 'elf_errmsg.c',
+                       libelf + 'elf_errno.c',
+                       libelf + 'elf_data.c',
+                       libelf + 'elf_fill.c',
+                       libelf + 'elf_flag.c',
+                       libelf + 'elf_getarhdr.c',
+                       libelf + 'elf_getarsym.c',
+                       libelf + 'elf_getbase.c',
+                       libelf + 'elf_getident.c',
+                       libelf + 'elf_hash.c',
+                       libelf + 'elf_kind.c',
+                       libelf + 'elf_memory.c',
+                       libelf + 'elf_next.c',
+                       libelf + 'elf_open.c',
+                       libelf + 'elf_rand.c',
+                       libelf + 'elf_rawfile.c',
+                       libelf + 'elf_phnum.c',
+                       libelf + 'elf_shnum.c',
+                       libelf + 'elf_shstrndx.c',
+                       libelf + 'elf_scn.c',
+                       libelf + 'elf_strptr.c',
+                       libelf + 'elf_update.c',
+                       libelf + 'elf_version.c',
+                       libelf + 'gelf_cap.c',
+                       libelf + 'gelf_checksum.c',
+                       libelf + 'gelf_dyn.c',
+                       libelf + 'gelf_ehdr.c',
+                       libelf + 'gelf_getclass.c',
+                       libelf + 'gelf_fsize.c',
+                       libelf + 'gelf_move.c',
+                       libelf + 'gelf_phdr.c',
+                       libelf + 'gelf_rel.c',
+                       libelf + 'gelf_rela.c',
+                       libelf + 'gelf_shdr.c',
+                       libelf + 'gelf_sym.c',
+                       libelf + 'gelf_syminfo.c',
+                       libelf + 'gelf_symshndx.c',
+                       libelf + 'gelf_xlate.c',
+                       libelf + 'libelf_align.c',
+                       libelf + 'libelf_allocate.c',
+                       libelf + 'libelf_ar.c',
+                       libelf + 'libelf_ar_util.c',
+                       libelf + 'libelf_checksum.c',
+                       libelf + 'libelf_data.c',
+                       libelf + 'libelf_ehdr.c',
+                       libelf + 'libelf_extended.c',
+                       libelf + 'libelf_memory.c',
+                       libelf + 'libelf_open.c',
+                       libelf + 'libelf_phdr.c',
+                       libelf + 'libelf_shdr.c',
+                       libelf + 'libelf_xlate.c'] + libelf_m4_source + host_source)
+
+    libdwarf_m4_source = ['dwarf_funcs.c',
+                          'dwarf_pro_funcs.c',
+                          'dwarf_pro_pubnames.c',
+                          'dwarf_pro_types.c',
+                          'dwarf_pro_vars.c',
+                          'dwarf_pro_weaks.c',
+                          'dwarf_pubnames.c',
+                          'dwarf_pubtypes.c',
+                          'dwarf_types.c',
+                          'dwarf_vars.c',
+                          'dwarf_weaks.c']
+    for s in libdwarf_m4_source:
+        bld(target = s, source = libdwarf + s[:-2] + '.m4', rule = libdwarf_m4_rule)
+
+    bld.stlib(target = 'dwarf',
+              features = 'c',
+              install_path = None,
+              includes = [bld.bldnode.abspath(),
+                          'elftoolchain/libelf',
+                          'elftoolchain/libdwarf',
+                          'elftoolchain/common'] + includes,
+              cflags = conf['cflags'],
+              source =[libdwarf + 'dwarf_abbrev.c',
+                       libdwarf + 'dwarf_arange.c',
+                       libdwarf + 'dwarf_attr.c',
+                       libdwarf + 'dwarf_attrval.c',
+                       libdwarf + 'dwarf_cu.c',
+                       libdwarf + 'dwarf_dealloc.c',
+                       libdwarf + 'dwarf_die.c',
+                       libdwarf + 'dwarf_dump.c',
+                       libdwarf + 'dwarf_errmsg.c',
+                       libdwarf + 'dwarf_finish.c',
+                       libdwarf + 'dwarf_form.c',
+                       libdwarf + 'dwarf_frame.c',
+                       libdwarf + 'dwarf_init.c',
+                       libdwarf + 'dwarf_lineno.c',
+                       libdwarf + 'dwarf_loclist.c',
+                       libdwarf + 'dwarf_macinfo.c',
+                       libdwarf + 'dwarf_pro_arange.c',
+                       libdwarf + 'dwarf_pro_attr.c',
+                       libdwarf + 'dwarf_pro_die.c',
+                       libdwarf + 'dwarf_pro_expr.c',
+                       libdwarf + 'dwarf_pro_finish.c',
+                       libdwarf + 'dwarf_pro_frame.c',
+                       libdwarf + 'dwarf_pro_init.c',
+                       libdwarf + 'dwarf_pro_lineno.c',
+                       libdwarf + 'dwarf_pro_macinfo.c',
+                       libdwarf + 'dwarf_pro_reloc.c',
+                       libdwarf + 'dwarf_pro_sections.c',
+                       libdwarf + 'dwarf_ranges.c',
+                       libdwarf + 'dwarf_reloc.c',
+                       libdwarf + 'dwarf_seterror.c',
+                       libdwarf + 'dwarf_str.c',
+                       libdwarf + 'libdwarf.c',
+                       libdwarf + 'libdwarf_abbrev.c',
+                       libdwarf + 'libdwarf_arange.c',
+                       libdwarf + 'libdwarf_attr.c',
+                       libdwarf + 'libdwarf_die.c',
+                       libdwarf + 'libdwarf_error.c',
+                       libdwarf + 'libdwarf_elf_access.c',
+                       libdwarf + 'libdwarf_elf_init.c',
+                       libdwarf + 'libdwarf_frame.c',
+                       libdwarf + 'libdwarf_info.c',
+                       libdwarf + 'libdwarf_init.c',
+                       libdwarf + 'libdwarf_lineno.c',
+                       libdwarf + 'libdwarf_loc.c',
+                       libdwarf + 'libdwarf_loclist.c',
+                       libdwarf + 'libdwarf_macinfo.c',
+                       libdwarf + 'libdwarf_nametbl.c',
+                       libdwarf + 'libdwarf_ranges.c',
+                       libdwarf + 'libdwarf_reloc.c',
+                       libdwarf + 'libdwarf_rw.c',
+                       libdwarf + 'libdwarf_sections.c',
+                       libdwarf + 'libdwarf_str.c'] + libdwarf_m4_source)
+
+    #
+    # The no warning on implicit function decls is for asprintf on Wing64.
+    #
+    bld.stlib(target = 'elftc',
+              features = 'c',
+              install_path = None,
+              includes = [bld.bldnode.abspath(),
+                          'elftoolchain/libelf',
+                          'elftoolchain/libelftc',
+                          'elftoolchain/common'] + includes,
+              cflags = conf['cflags'] + ['-Wno-implicit-function-declaration'],
+              source =[libelftc + 'elftc_bfdtarget.c',
+                       libelftc + 'elftc_copyfile.c',
+                       libelftc + 'elftc_demangle.c',
+                       libelftc + 'elftc_reloc_type_str.c',
+                       libelftc + 'elftc_set_timestamps.c',
+                       libelftc + 'elftc_string_table.c',
+                       libelftc + 'elftc_timestamp.c',
+                       libelftc + 'elftc_version.c',
+                       libelftc + 'libelftc_bfdtarget.c',
+                       libelftc + 'libelftc_dem_arm.c',
+                       libelftc + 'libelftc_dem_gnu2.c',
+                       libelftc + 'libelftc_dem_gnu3.c',
+                       libelftc + 'libelftc_hash.c',
+                       libelftc + 'libelftc_vstr.c'])
+
+#
+# Libiberty module.
+#
+def conf_libiberty(conf):
+    conf.check(header_name='alloca.h',    features = 'c', mandatory = False)
+    conf.check(header_name='fcntl.h',     features = 'c', mandatory = False)
+    conf.check(header_name='process.h',   features = 'c', mandatory = False)
+    conf.check(header_name='stdlib.h',    features = 'c')
+    conf.check(header_name='string.h',    features = 'c')
+    conf.check(header_name='strings.h',   features = 'c', mandatory = False)
+    conf.check(header_name='sys/file.h',  features = 'c', mandatory = False)
+    conf.check(header_name='sys/stat.h',  features = 'c', mandatory = False)
+    conf.check(header_name='sys/time.h',  features = 'c', mandatory = False)
+    conf.check(header_name='sys/types.h', features = 'c', mandatory = False)
+    conf.check(header_name='sys/wait.h',  features = 'c', mandatory = False)
+    conf.check(header_name='unistd.h',    features = 'c', mandatory = False)
+    conf.check(header_name='vfork.h',     features = 'c', mandatory = False)
+
+    conf.check_cc(fragment = '''
+                    #include <sys/types.h>
+                    #include <sys/time.h>
+                    #include <sys/resource.h>
+                  int main() { struct rusage ru = {0}; int r = getrusage(RUSAGE_SELF, &ru); } ''',
+                  cflags = '-Wall', define_name = 'HAVE_GETRUSAGE',
+                  msg = 'Checking for getrusage', mandatory = False)
+    conf.write_config_header('libiberty/config.h')
+
+def bld_libiberty(bld, conf):
+    if bld.env.DEST_OS == 'win32':
+        pex_host = 'libiberty/pex-win32.c'
+    else:
+        pex_host = 'libiberty/pex-unix.c'
+    bld.stlib(target = 'iberty',
+              features = 'c',
+              install_path = None,
+              includes = ['libiberty'],
+              cflags = conf['cflags'],
+              defines = ['HAVE_CONFIG_H=1'],
+              source =['libiberty/concat.c',
+                       'libiberty/cplus-dem.c',
+                       'libiberty/cp-demangle.c',
+                       'libiberty/d-demangle.c',
+                       'libiberty/rust-demangle.c',
+                       'libiberty/make-temp-file.c',
+                       'libiberty/mkstemps.c',
+                       'libiberty/safe-ctype.c',
+                       'libiberty/stpcpy.c',
+                       'libiberty/pex-common.c',
+                       'libiberty/pex-one.c',
+                       'libiberty/xmalloc.c',
+                       'libiberty/xmemdup.c',
+                       'libiberty/xstrdup.c',
+                       'libiberty/xstrerror.c',
+                       pex_host])
+
+#
+# The doxy command.
+#
+from waflib import Build
+class doxy(Build.BuildContext):
+    fun = 'build'
+    cmd = 'doxy'

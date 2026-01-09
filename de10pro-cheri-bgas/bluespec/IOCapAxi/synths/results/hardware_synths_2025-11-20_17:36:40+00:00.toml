@@ -1,0 +1,68 @@
+timestamp = "2025-11-20_17:36:40+00:00"
+generated_by = "gen_report.py"
+git_hash = "8823ee3\n"
+
+[single_checker_1per]
+dut = "mkSingleChecker3_1percycle"
+fit_timestamp = "2025-11-20_15:33:22+00:00"
+sta_timestamp = "2025-11-20_15:36:16+00:00"
+fmax = "253.55"
+luts = 3223
+luts_device_max = 933120
+
+[single_checker_2per]
+dut = "mkSingleChecker3_2percycle"
+fit_timestamp = "2025-11-20_15:40:35+00:00"
+sta_timestamp = "2025-11-20_15:44:31+00:00"
+fmax = "194.21"
+luts = 4636
+luts_device_max = 933120
+
+[full_exposer_0checkers_1per]
+dut = "mkCombinedIOCapExposerV6_0pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-20_15:50:35+00:00"
+sta_timestamp = "2025-11-20_15:54:53+00:00"
+fmax = "191.68"
+luts = 23264
+luts_device_max = 933120
+
+[full_exposer_1checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_1pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-20_16:05:37+00:00"
+sta_timestamp = "2025-11-20_16:12:30+00:00"
+fmax = "198.22"
+luts = 59809
+luts_device_max = 933120
+
+[full_exposer_2checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_2pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-20_16:23:22+00:00"
+sta_timestamp = "2025-11-20_16:30:36+00:00"
+fmax = "193.12"
+luts = 65140
+luts_device_max = 933120
+
+[full_exposer_3checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_3pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-20_16:42:11+00:00"
+sta_timestamp = "2025-11-20_16:49:25+00:00"
+fmax = "186.12"
+luts = 70280
+luts_device_max = 933120
+
+[full_exposer_4checkers_1per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_4pool_1percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-20_17:01:37+00:00"
+sta_timestamp = "2025-11-20_17:08:41+00:00"
+fmax = "179.31"
+luts = 74900
+luts_device_max = 933120
+
+# Note: this may be with a long path through unpipelined BRAM
+[full_exposer_4checkers_2per]
+dut = "mkCombinedIOCapExposerV6_blockinvalid_4pool_2percycle_KeyManager2V1_Tb"
+fit_timestamp = "2025-11-20_17:22:56+00:00"
+sta_timestamp = "2025-11-20_17:35:10+00:00"
+fmax = "148.21"
+luts = 85610
+luts_device_max = 933120

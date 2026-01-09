@@ -1,0 +1,118 @@
+default:
+    @just --list
+
+gen-bitfields:
+    #!/bin/bash
+    uv run python3 ./testbenches/generate_bitfield.py > ./testbenches/include/tb_bitfields.h
+
+sim-b name:
+    make ./build/{{name}}.bsim
+    ./build/{{name}}.bsim
+
+build-v name:
+    make ./build/verilog/{{name}}.v
+
+build-sim-v name:
+    make ./build/{{name}}.vsim
+
+sim-v name *args:
+    make ./build/{{name}}.vsim
+    ./build/{{name}}.vsim --toml ./testbenches/results/{{name}}.toml {{args}}
+
+test-cpp-encdec:
+    #!/bin/bash
+    clang++ -g -std=gnu++20 -I$(dirname $(which verilator))/../share/verilator/include -I./testbenches/include -I./testbenches/librust_caps_c ./testbenches/librust_caps_c/librust_caps_c.a ./testbenches/checkEncDec.cpp -o ./build/checkEncDec
+    ./build/checkEncDec
+
+test-keymgr *args: (sim-v "mkSimpleIOCapKeyManager_Tb" args)
+
+test-exposer-v1 *args: (sim-v "mkSimpleIOCapExposerV1_Tb" args)
+test-exposer-v2 *args: (sim-v "mkSimpleIOCapExposerV2_Tb" args)
+test-exposer-v3 *args: (sim-v "mkSimpleIOCapExposerV3_Tb" args)
+test-exposer-v4-noblock *args: (sim-v "mkSimpleIOCapExposerV4_noblock_Tb" args)
+test-exposer-v4 *args: (sim-v "mkSimpleIOCapExposerV4_blockinvalid_Tb" args)
+test-exposer-v5-noblock *args: (sim-v "mkSimpleIOCapExposerV5_noblock_Tb" args)
+test-exposer-v5 *args: (sim-v "mkSimpleIOCapExposerV5_blockinvalid_Tb" args)
+test-exposer-v6 *args: (sim-v "mkSimpleIOCapExposerV6_blockinvalid_Tb" args)
+test-exposer-v6-1per *args: (sim-v "mkSimpleIOCapExposerV6_blockinvalid_1percycle_Tb" args)
+test-decoder-comb-11 *args: (sim-v "mkCap2024_11_Decode_Comb_Tb" args)
+test-decoder-comb-02 *args: (sim-v "mkCap2024_02_Decode_Comb_Tb" args)
+test-decoder-fsm-11 *args: (sim-v "mkCap2024_11_Decode_FastFSM_Tb" args)
+test-decoder-fsm-02 *args: (sim-v "mkCap2024_02_Decode_FastFSM_Tb" args)
+
+test-keymgr2-all: test-keymgr2-keydata-dualportsingle
+
+test-keymgr2-keydata-dualportsingle *args: (sim-v "mkIOCapAxi_KeyManager2_KeyDataPipe_DualPortSingleCheckerPort_Tb" args)
+test-keymgr2-refcount-twovalve *args: (sim-v "mkIOCapAxi_KeyManager2_RefCountPipe_TwoValve_Tb" args)
+
+test-combined-v6-1per-0pool *args: (sim-v "mkCombinedIOCapExposerV6_0pool_KeyManager2V1_Tb" args)
+test-combined-v6-1per-0pool-64 *args: (sim-v "mkCombinedIOCapExposerV6_0pool_KeyManager2V1_64_Tb" args)
+test-combined-v6-1per-1pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_1pool_1percycle_KeyManager2V1_Tb" args)
+test-combined-v6-1per-2pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_2pool_1percycle_KeyManager2V1_Tb" args)
+test-combined-v6-1per-3pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_3pool_1percycle_KeyManager2V1_Tb" args)
+test-combined-v6-1per-4pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_4pool_1percycle_KeyManager2V1_Tb" args)
+test-combined-v6-1per-9pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_9pool_1percycle_KeyManager2V1_Tb" args)
+test-combined-v6-2per-1pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_1pool_2percycle_KeyManager2V1_Tb" args)
+test-combined-v6-2per-2pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_2pool_2percycle_KeyManager2V1_Tb" args)
+test-combined-v6-2per-3pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_3pool_2percycle_KeyManager2V1_Tb" args)
+test-combined-v6-2per-4pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_4pool_2percycle_KeyManager2V1_Tb" args)
+test-combined-v6-2per-5pool *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_5pool_2percycle_KeyManager2V1_Tb" args)
+test-combined-v6-2per-1pool-64 *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_1pool_2percycle_KeyManager2V1_64_Tb" args)
+test-combined-v6-2per-2pool-64 *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_2pool_2percycle_KeyManager2V1_64_Tb" args)
+test-combined-v6-2per-3pool-64 *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_3pool_2percycle_KeyManager2V1_64_Tb" args)
+test-combined-v6-2per-4pool-64 *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_4pool_2percycle_KeyManager2V1_64_Tb" args)
+test-combined-v6-2per-5pool-64 *args: (sim-v "mkCombinedIOCapExposerV6_blockinvalid_5pool_2percycle_KeyManager2V1_64_Tb" args)
+test-combined-v6-2per-1pool-noblock *args: (sim-v "mkCombinedIOCapExposerV6_noblockinvalid_1pool_2percycle_KeyManager2V1_64_Tb" args)
+
+# Test all ExposerV6 configurations, which gathers the required latency/throughput data for ./testbenches/gen_report.py
+test-combined-v6-allpool: (test-combined-v6-1per-0pool-64) \
+    (test-combined-v6-1per-1pool) \
+    (test-combined-v6-1per-2pool) \
+    (test-combined-v6-1per-3pool) \
+    (test-combined-v6-1per-4pool) \
+    (test-combined-v6-1per-9pool) \
+    (test-combined-v6-2per-1pool-64) \
+    (test-combined-v6-2per-2pool-64) \
+    (test-combined-v6-2per-3pool-64) \
+    (test-combined-v6-2per-4pool-64) \
+    (test-combined-v6-2per-5pool-64)
+
+# Test the SOC versions of the Enforcer (ExposerV4) and Lease Manager (keymgr)
+test-soc-ver: test-exposer-v4-noblock test-keymgr
+
+test-single-checker3-1per *args: (sim-v "mkSingleChecker3_1percycle" args)
+test-single-checker3-2per *args: (sim-v "mkSingleChecker3_2percycle" args)
+
+build-all: \
+    (build-sim-v "mkSimpleIOCapKeyManager_Tb") \
+    (build-sim-v "mkSimpleIOCapExposerV1_Tb") \
+    (build-sim-v "mkSimpleIOCapExposerV2_Tb") \
+    (build-sim-v "mkSimpleIOCapExposerV3_Tb") \
+    (build-sim-v "mkSimpleIOCapExposerV4_noblock_Tb") \
+    (build-sim-v "mkSimpleIOCapExposerV4_blockinvalid_Tb") \
+    (build-sim-v "mkSimpleIOCapExposerV5_noblock_Tb") \
+    (build-sim-v "mkSimpleIOCapExposerV5_blockinvalid_Tb") \
+    (build-sim-v "mkSimpleIOCapExposerV6_blockinvalid_Tb") \
+    (build-sim-v "mkSimpleIOCapExposerV6_blockinvalid_1percycle_Tb") \
+    (build-sim-v "mkCap2024_11_Decode_Comb_Tb") \
+    (build-sim-v "mkCap2024_02_Decode_Comb_Tb") \
+    (build-sim-v "mkCap2024_11_Decode_FastFSM_Tb") \
+    (build-sim-v "mkCap2024_02_Decode_FastFSM_Tb") \
+    (build-sim-v "mkIOCapAxi_KeyManager2_KeyDataPipe_DualPortSingleCheckerPort_Tb") \
+    (build-sim-v "mkIOCapAxi_KeyManager2_RefCountPipe_TwoValve_Tb") \
+    (build-sim-v "mkCombinedIOCapExposerV5_blockinvalid_KeyManager2V1_Tb") \
+    (build-sim-v "mkCombinedIOCapExposerV6_blockinvalid_1percycle_KeyManager2V1_Tb") \
+    (build-sim-v "mkCombinedIOCapExposerV6_blockinvalid_0pool_1percycle_KeyManager2V1_Tb") \
+    (build-sim-v "mkCombinedIOCapExposerV6_blockinvalid_1pool_1percycle_KeyManager2V1_Tb") \
+    (build-sim-v "mkCombinedIOCapExposerV6_blockinvalid_2pool_1percycle_KeyManager2V1_Tb") \
+    (build-sim-v "mkCombinedIOCapExposerV6_blockinvalid_3pool_1percycle_KeyManager2V1_Tb") \
+    (build-sim-v "mkCombinedIOCapExposerV6_blockinvalid_4pool_1percycle_KeyManager2V1_Tb") \
+    (build-sim-v "mkSingleChecker3_1percycle") \
+    (build-sim-v "mkSingleChecker3_2percycle") \
+
+konatify name pattern *args:
+    just {{name}} --konata {{args}} | python sanitize_konata.py ./testbenches/results/konata/{{name}} --pattern "{{pattern}}"
+
+
+regen-tb-paper-reports:
+    cd testbenches && uv run python3 gen_report.py ./results/reports ./results/hardware_latency.toml

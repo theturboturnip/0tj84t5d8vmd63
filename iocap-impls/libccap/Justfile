@@ -1,0 +1,29 @@
+default:
+    @just --list
+
+gen-bitfields:
+    python3 ./generate_bitfield.py > src/libccap_bitfields.incl.c
+
+# Force clang here because it has more drastic warnings
+build: gen-bitfields
+    mkdir -p ./build/
+    CC=clang CXX=clang++ cmake -S . -B ./build/
+    CC=clang CXX=clang++ cmake --build ./build/
+
+test: build
+    ./build/libccap_cmd ../tests_cap2024_11/valid_decode_valid_sig_all.txt
+    ./build/libccap_cmd ../tests_cap2024_11/valid_decode_valid_all_edge_cases.txt
+    ./build/libccap_cmd ../tests_cap2024_11/valid_decode_valid_only_edge_cases.txt
+
+version := "0.6.3"
+vendor:
+    mkdir -p ./vendor/libccap-{{version}}/
+    rm -rf ./vendor/libccap-{{version}}/*
+    cp ./include/* ./src/* ./vendor/libccap-{{version}}/
+    echo "{{version}}" >> ./vendor/libccap-{{version}}/LIBCCAP_VERSION
+
+    mkdir -p ./vendor-split/libccap-{{version}}/
+    rm -rf ./vendor-split/libccap-{{version}}/*
+    cp -r ./include/ ./src/ ./vendor-split/libccap-{{version}}/
+    echo "{{version}}" >> ./vendor-split/libccap-{{version}}/include/LIBCCAP_VERSION
+    echo "{{version}}" >> ./vendor-split/libccap-{{version}}/src/LIBCCAP_VERSION

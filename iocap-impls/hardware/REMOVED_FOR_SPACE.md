@@ -1,0 +1,1 @@
+This was an older version of the hardware infrastructure now present in de10pro-cheri-bgas/bluespec/IOCapAxi and was removed to avoid confusion.

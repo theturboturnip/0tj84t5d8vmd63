@@ -1,0 +1,35 @@
+#
+# Install the RTEMS gdb python
+#
+
+def init(ctx):
+    pass
+
+def options(opt):
+    opt.load('python')
+
+def configure(conf):
+    pass
+
+def build(bld):
+    source = ['__init__.py',
+              'chains.py',
+              'classic.py',
+              'classic_printer.py',
+              'configuration.py',
+              'heaps.py',
+              'helper.py',
+              'main.py',
+              'objects.py',
+              'percpu.py',
+              'pretty.py',
+              'rtems.py',
+              'sparc.py',
+              'supercore.py',
+              'supercore_printer.py',
+              'threads.py',
+              'watchdog.py']
+    bld(features = 'py',
+        source = source,
+        install_from = '.',
+        install_path = '${PREFIX}/share/gdb/python/rtems')
