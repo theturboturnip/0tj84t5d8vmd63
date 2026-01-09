@@ -20,7 +20,7 @@ This repository contains the following sub-repositories:
     - `tests_cap2024_*/` stores these test vectors.
     - `libccap/` is a pure-C library which mirrors a subset of the `rust_caps_c/` functionality, used in our CheriBSD, CheriFreeRTOS, and QEMU forks.
     - `python/cap2024_11_decoder_test.py` is a Python IOCap decoder.
-- `de10pro-cheri-bgas/`, our fork of a Stratix-10-FPGA-based SoC including IOCap hardware implementations.
+- `de10pro-cheri-bgas/`, our fork of the CHERI BGAS SoC, including IOCap hardware implementations.
     - `bluespec/IOCapAxi/` includes IOCap hardware modules.
         - `aes/` is an AES library.
         - `cap2024/` includes IOCap decoders and signature checking modules.
@@ -48,7 +48,7 @@ This repository contains the following sub-repositories:
         - `iocap/libccap*` is a C library for generating IOCaps, vendored from `iocap-impls`.
         - `virtio_mmio.h` and `virtio.h` include IOCap utility functions.
         - `virtio.c` includes lease manager initialization using static predefined keys and updates generic VirtIO descriptor interaction functions to use IOCaps instead, automatically allowing virtio-net and virtio-blk drivers to support IOCaps.
-- `tinyemu-virtio/`, a set of software-emulated VirtIO peripherals with VirtIO-IOCap support based on <https://bellard.org/tinyemu/> 
+- `tinyemu-virtio/`, a set of software-emulated VirtIO peripherals with VirtIO-IOCap support based on <https://bellard.org/tinyemu/>.
     - `src/iocap/` contains Arm and x86 copies of the `rust_caps_c/` libraries from `iocap-impls`, for use on the Stratix 10 hard Arm CPU and x86 simulation machines respectively.
     - `src/virtio.{c,h}` include updated generic functions for handling VirtIO descriptors that transparently change to handle IOCaps when necessary, enabling IOCap support in all peripherals.
         - It also ensures source IOCaps are carried with all DMA attempts so that they can be used for authentication.
