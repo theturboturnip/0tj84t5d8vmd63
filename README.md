@@ -78,6 +78,8 @@ tinyemu
 
 -->
 
+All source code copyright notices reflect the original authors of the pre-fork code, not the authors of this paper, except for a few instances where the relevant names have been anonymized.
+
 ## Omissions
 
 This repository is intended to be anonymized via <https://anonymous.4open.science>, which has a 2GB-per-user limit.
@@ -90,5 +92,3 @@ To avoid this limit we have removed the following irrelevant, redundant, or bina
 - Copies of `librust_caps_c.a` in `tinyemu-virtio` and `de10pro-cheri-bgas`, static library files built from the Rust code in `iocap-impls/rust_caps_c`, took up 20MB each and have been replaced with txt files.
 
 We have also removed `*.git*` files throughout.
-
-All source code copyright notices reflect the original authors of the pre-fork code, not the authors of this paper, except for a few instances where the relevant names have been anonymized.
