@@ -165,7 +165,7 @@ CHERI_CONCENTRATE_128 = [
 #       t = (b_top[50:E] + c_t) | T[13:3] | 0'3 | 0'E
 #
 #
-# SAMUEL NOTE: THIS DOESN'T WORK, BECAUSE WE LOSE INFORMATION!
+# NOTE: THIS DOESN'T WORK, BECAUSE WE LOSE INFORMATION!
 # We can reconstruct T and B in full without the addr, but the actual top bits of the top and base depend on c_t and c_b which depend on the *three-way-inequality* B <= A <= T.
 CHERI_CONCENTRATE_128_B_eq_A = [
     Bits("B_E", 3),
